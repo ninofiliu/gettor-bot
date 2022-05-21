@@ -32,6 +32,8 @@ def respond(
     if text == "help":
         return help_text
     if text == "get_bridge":
+        if len(bridges) == 0:
+            return "No bridges available"
         if not username in briges_by_username:
             bridge = choice(bridges)
             briges_by_username[username] = bridge

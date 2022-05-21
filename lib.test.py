@@ -25,6 +25,11 @@ class TestRespond(unittest.TestCase):
             )
             self.assertEqual(first_response, subsequent_response)
 
+    # No bridges available: should fail gracefully
+    def test_get_bridge_2(self):
+        response = respond("get_bridge", "bobby", [], {})
+        self.assertEqual(response, "No bridges available")
+
     def test_default(self):
         response = respond("something that is not a known command", "", [], {})
         self.assertEqual(response, help_text)
