@@ -12,9 +12,8 @@ This way, this lib
 (* ^ ω ^)
 """
 
-from typing import Dict, List
 from random import choice
-
+from typing import Dict, List
 
 help_text = """
 I did not undestand your message.

@@ -1,3 +1,4 @@
 anyio
-semaphore
 black
+isort
+semaphore

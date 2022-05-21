@@ -1,6 +1,9 @@
+import sqlite3
 import sys
+
 import anyio
 from semaphore import Bot, ChatContext
+
 from lib import respond
 
 bridges = []
