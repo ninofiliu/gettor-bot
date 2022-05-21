@@ -1,9 +1,10 @@
 import os
 import sqlite3
+from consts import db_file_name
 
-os.remove("db.db")
+os.remove(db_file_name)
 
-con = sqlite3.connect("db.db")
+con = sqlite3.connect(db_file_name)
 cur = con.cursor()
 
 bridges = []
