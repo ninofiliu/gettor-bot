@@ -12,17 +12,29 @@ This way, this lib
 (* ^ ω ^)
 """
 
+from typing import Dict, List
+from random import choice
+
+
 help_text = """
 I did not undestand your message.
 
 Please text me one of:
 
 - help: sends this current help message
+- get_bridge: sends one bridge info
 """
 
 
-def respond(text: str) -> str:
+def respond(
+    text: str, username: str, bridges: List[str], briges_by_username: Dict[str, str]
+) -> str:
     if text == "help":
         return help_text
+    if text == "get_bridge":
+        if not username in briges_by_username:
+            bridge = choice(bridges)
+            briges_by_username[username] = bridge
+        return briges_by_username[username]
     else:
         return help_text

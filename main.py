@@ -3,6 +3,9 @@ import anyio
 from semaphore import Bot, ChatContext
 from lib import respond
 
+bridges = []
+bridges_by_username = {}
+
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
@@ -13,7 +16,14 @@ if __name__ == "__main__":
 
     @bot.handler("")
     async def handler(ctx: ChatContext) -> None:
-        await ctx.message.reply(respond(ctx.message.get_body()))
+        await ctx.message.reply(
+            respond(
+                ctx.message.get_body(),
+                ctx.message.username,
+                bridges,
+                bridges_by_username,
+            )
+        )
 
     async def main():
         async with bot:
