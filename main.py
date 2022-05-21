@@ -1,12 +1,11 @@
-import sqlite3
 import sys
 
 import anyio
 from semaphore import Bot, ChatContext
 
 from lib import respond
+from db import bridges
 
-bridges = []
 bridges_by_username = {}
 
 if __name__ == "__main__":
