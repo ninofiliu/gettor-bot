@@ -5,13 +5,14 @@
 1. Install [signald](https://signald.org/)
 2. Start the signald daemon
 3. Register or link a phone number to signald
-4. Clone this repo, setup the python virtual environment, and install deps
+4. Clone this repo, setup the python virtual environment, install deps, and setup the database
    ```sh
    git clone git@github.com:ninofiliu/gettor-bot
    cd gettor-bot
    python -m venv .env
    source .env/bin/activate
    pip install -r requirements.txt
+   python setup_db.py
    ```
 
 If you encounter
