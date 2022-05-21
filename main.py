@@ -4,9 +4,7 @@ import anyio
 from semaphore import Bot, ChatContext
 
 from lib import respond
-from db import bridges
-
-bridges_by_username = {}
+from db import bridges, get_bridge, set_bridge
 
 if __name__ == "__main__":
 
@@ -23,7 +21,8 @@ if __name__ == "__main__":
                 ctx.message.get_body(),
                 ctx.message.username,
                 bridges,
-                bridges_by_username,
+                get_bridge,
+                set_bridge,
             )
         )
 

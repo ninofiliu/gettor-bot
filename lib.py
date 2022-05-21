@@ -13,7 +13,7 @@ This way, this lib
 """
 
 from random import choice
-from typing import Dict, List
+from typing import Callable, List, Union
 
 help_text = """
 I did not undestand your message.
@@ -26,16 +26,23 @@ Please text me one of:
 
 
 def respond(
-    text: str, username: str, bridges: List[str], briges_by_username: Dict[str, str]
+    text: str,
+    username: str,
+    bridges: List[str],
+    get_bridge: Callable[[str], Union[str, None]],
+    set_bridge: Callable[[str, str], None],
 ) -> str:
     if text == "help":
         return help_text
     if text == "get_bridge":
         if len(bridges) == 0:
             return "No bridges available"
-        if not username in briges_by_username:
-            bridge = choice(bridges)
-            briges_by_username[username] = bridge
-        return briges_by_username[username]
+        maybe_bridge = get_bridge(username)
+        if maybe_bridge is None:
+            new_bridge = choice(bridges)
+            set_bridge(username, new_bridge)
+            return new_bridge
+        else:
+            return maybe_bridge
     else:
         return help_text

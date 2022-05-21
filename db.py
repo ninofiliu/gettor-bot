@@ -8,10 +8,19 @@ cur = con.cursor()
 bridges: List[str] = [bridge for (bridge,) in cur.execute("SELECT * FROM bridges")]
 
 
-class User:
-    username: str
-    bridge: str
+def get_bridge(username: str) -> Union[None, str]:
+    matches = list(
+        cur.execute(
+            "SELECT bridge FROM users WHERE username=:username", {"username": username}
+        )
+    )
+    if len(matches) == 0:
+        return None
+    return matches[0][0]
 
-    def __init__(self, db_user: Tuple[str, str]) -> None:
-        self.username = db_user[0]
-        self.bridge = db_user[1]
+
+def set_bridge(username: str, bridge: str) -> None:
+    cur.execute(
+        "UPDATE users SET bridge=:bridge WHERE username=:username",
+        {"username": username, "bridge": bridge},
+    )
