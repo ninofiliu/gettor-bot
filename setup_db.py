@@ -15,5 +15,5 @@ cur.execute("CREATE TABLE bridges (bridge text)")
 file = open("./bridges.txt")
 for line in file:
     cur.execute("INSERT INTO bridges VALUES (?)", (line[:-1],))
-cur.execute("CREATE TABLE users (username text, bridge text)")
+cur.execute("CREATE TABLE users (username text, bridge text, language text)")
 con.commit()

@@ -8,7 +8,7 @@ con = sqlite3.connect(":memory:")
 con.row_factory = sqlite3.Row
 cur = con.cursor()
 cur.execute("CREATE TABLE bridges (bridge text)")
-cur.execute("CREATE TABLE users (username text, bridge text)")
+cur.execute("CREATE TABLE users (username text, bridge text, language text)")
 
 
 def fill_db(bridges: List[Tuple[str]], users: List[Tuple[str, str]]) -> None:
