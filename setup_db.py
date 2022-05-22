@@ -23,6 +23,6 @@ for i in range(len(bridges)):
     )
 cur.execute("CREATE TABLE users (username TEXT, bridge TEXT, trust FLOAT, lang TEXT)")
 cur.execute(
-    "CREATE TABLE recommendations (src TEXT, dst TEXT, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    "CREATE TABLE recommendations (src TEXT, dst TEXT, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
 )
 con.commit()

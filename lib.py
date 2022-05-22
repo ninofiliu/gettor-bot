@@ -41,11 +41,6 @@ def respond(
         cur.execute(f"SELECT * FROM {table}")
         return cur.fetchall()
 
-    def get_one(table: str, key: str, value):
-        cur = con.cursor()
-        cur.execute(f"SELECT * FROM {table} WHERE ? = ?", (key, value))
-        return cur.fetchone()
-
     def set_one(
         table: str,
         filter_key,
@@ -76,22 +71,24 @@ def respond(
     if text == "get_bridge":
         bridges = get_all("bridges")
         if len(bridges) == 0:
-
             return translations["en"]["no_bridges"]
-
-        maybe_user = get_one("users", "username", username)
-        if maybe_user is None:
+        users = read("SELECT * FROM users WHERE username = ?", (username,))
+        if (len(users)) == 0:
+            return "Failed: you are unknown"
+        user = users[0]
+        if user["trust"] < 0.5:
+            return "Failed: you are not trusted enough"
+        if user["bridge"] is None:
             new_bridge = random.choice(bridges)
             set_one("users", "username", username, "bridge", new_bridge["value"])
             return new_bridge["value"]
-        else:
-            return maybe_user["value"]
+        return user["bridge"]
 
     recommend_match = re.match("recommend (.+)", text)
     if recommend_match is not None:
         recommenders = read("SELECT * FROM users WHERE username = ?", (username,))
         if len(recommenders) == 0:
-            return f"Failed: you are unkown"
+            return f"Failed: you are unknown"
         recommender = recommenders[0]
 
         if recommender["trust"] == 0:

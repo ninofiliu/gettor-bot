@@ -1,5 +1,4 @@
-help_text_en = """
-I did not undestand your message.
+help_text_en = """Hello! I am GettorBot.
 
 Please text me one of:
 
@@ -8,8 +7,7 @@ Please text me one of:
 - recommend NUMBER: recommends one phone number
 """
 
-help_text_ru = """
-Сообщение не распознано.
+help_text_ru = """Привет! Я - GettorBot.
 
 Доступные команды:
 

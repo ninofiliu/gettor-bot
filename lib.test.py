@@ -78,32 +78,37 @@ class TestRespond(unittest.TestCase):
 
     ## get_bridge
 
-    # User does not exist: should send one bridge at random
+    # No bridges available: should fail gracefully
     def test_get_bridge_0(self):
-        fill_db(
-            bridges=[("b0", 0), ("b1", 0), ("b2", 0)], users=[("not-bobby", "b0", 0)]
-        )
+        fill_db()
 
         response = respond(con, "get_bridge", "bobby")
-        self.assertTrue(response in ["b0", "b1", "b2"])
+        self.assertEqual(response, "No bridges available")
 
-    # User already exists: should send the same bridge when asked several times
+    # User does not exist: should fail gracefully
     def test_get_bridge_1(self):
         fill_db(
             bridges=[("b0", 0), ("b1", 0), ("b2", 0)], users=[("not-bobby", "b0", 0)]
         )
 
-        first_response = respond(con, "get_bridges", "bobby")
-        for i in range(10):
-            subsequent_response = respond(con, "get_bridges", "bobby")
-            self.assertEqual(first_response, subsequent_response)
-
-    # No bridges available: should fail gracefully
-    def test_get_bridge_2(self):
-        fill_db()
-
         response = respond(con, "get_bridge", "bobby")
-        self.assertEqual(response, "No bridges available")
+        self.assertEqual(response, "Failed: you are unknown")
+
+    # User exist but is not trusted: should fail gracefully
+    def test_get_bridge_2(self):
+        fill_db(bridges=[("b0", 0), ("b1", 0), ("b2", 0)], users=[("bobby", "b0", 0)])
+        response = respond(con, "get_bridge", "bobby")
+        self.assertEqual(response, "Failed: you are not trusted enough")
+
+    # User already exists and is trusted: should send the same bridge when asked several times
+    def test_get_bridge_3(self):
+        fill_db(bridges=[("b0", 0), ("b1", 0), ("b2", 0)], users=[("bobby", "b0", 0.8)])
+
+        first_response = respond(con, "get_bridge", "bobby")
+        self.assertTrue(first_response in ["b0", "b1", "b2"])
+        for i in range(10):
+            subsequent_response = respond(con, "get_bridge", "bobby")
+            self.assertEqual(first_response, subsequent_response)
 
     ## recommend
 
@@ -117,7 +122,7 @@ class TestRespond(unittest.TestCase):
     def test_recommend_1(self):
         fill_db()
         response = respond(con, "recommend charlie", "bobby")
-        self.assertEqual(response, "Failed: you are unkown")
+        self.assertEqual(response, "Failed: you are unknown")
 
     # Untrusted recommender
     def test_recommend_2(self):

@@ -20,13 +20,12 @@ if __name__ == "__main__":
 
     @bot.handler("")
     async def handler(ctx: ChatContext) -> None:
-        await ctx.message.reply(
-            respond(
-                con,
-                ctx.message.get_body(),
-                ctx.message.username,
-            )
-        )
+        text = ctx.message.get_body()
+        username = ctx.message.source.number
+        response = respond(con, text, username)
+        print(f"{username} <\n{text}")
+        print(f"{sys.argv[1]} >\n{response}")
+        await ctx.message.reply(response)
 
     async def main():
         async with bot:
