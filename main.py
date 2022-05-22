@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     async def main():
         async with bot:
-            await bot.set_profile("Example")
+            await bot.set_profile("GettorBot")
             await bot.start()
 
     anyio.run(main)
