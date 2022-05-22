@@ -65,10 +65,10 @@ def respond(
         maybe_user = get_one("users", "username", username)
         if maybe_user is None:
             new_bridge = random.choice(bridges)
-            set_one("users", "username", username, "bridge", new_bridge["bridge"])
-            return new_bridge["bridge"]
+            set_one("users", "username", username, "bridge", new_bridge["value"])
+            return new_bridge["value"]
         else:
-            return maybe_user["bridge"]
+            return maybe_user["value"]
 
     else:
         return help_text
