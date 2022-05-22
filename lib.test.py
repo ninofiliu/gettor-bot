@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from select import select
 from typing import List, Tuple, TypedDict
 
-from lib import help_text, respond
+from lib import help_text_en, respond
 from params import max_recs_per_day
 
 nb_bridges_per_pool = 3
@@ -74,7 +74,7 @@ class TestRespond(unittest.TestCase):
 
         response = respond(con, "help", "bobby")
 
-        self.assertEqual(response, help_text)
+        self.assertEqual(response, help_text_en)
 
     ## get_bridge
 
@@ -111,7 +111,7 @@ class TestRespond(unittest.TestCase):
     def test_recommend_0(self):
         fill_db()
         response = respond(con, "recommend", "bobby")
-        self.assertEqual(response, help_text)
+        self.assertEqual(response, help_text_en)
 
     # Unknown recommender
     def test_recommend_1(self):
@@ -199,7 +199,7 @@ class TestRespond(unittest.TestCase):
             "not_a_known_command",
             "bobby",
         )
-        self.assertEqual(response, help_text)
+        self.assertEqual(response, help_text_en)
 
 
 if __name__ == "__main__":

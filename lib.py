@@ -15,12 +15,13 @@ This way, this lib
 import random
 import re
 import sqlite3
+from distutils.command.config import LANG_EXT
 from nis import match
 from typing import List
 
 from params import max_recs_per_day
 
-help_text = """
+help_text_en = """
 I did not undestand your message.
 
 Please text me one of:
@@ -28,6 +29,15 @@ Please text me one of:
 - help: sends this current help message
 - get_bridge: sends one bridge info
 - recommend NUMBER: recommends one phone number
+"""
+
+help_text_ru = """
+Сообщение не распознано.
+
+Доступные команды:
+
+- help: отправляет текущее сообщение помощи
+- get_bridge: отправляет адрес моста
 """
 
 
@@ -70,13 +80,38 @@ def respond(
         )
         con.commit()
 
+    if text == "list_languages":
+
+        return "en, ru"
+
+    # GURL PLEASE HELP ME
+
+    if text == "choose_language":
+
+        lang_match = re.match(r"^choose_language (.*)", text)
+        if lang_match is not None:
+            lang = lang_match.group(0)
+            username, lang
+
     if text == "help":
-        return help_text
+
+        translation = {
+            "en": {"help_text": help_text_en},
+            "ru": {"help_text": help_text_ru},
+        }
+
+        return translation[lang]["help_text"]
 
     if text == "get_bridge":
         bridges = get_all("bridges")
         if len(bridges) == 0:
-            return "No bridges available"
+
+            translation = {
+                "en": {"no_bridges": "No bridges available"},
+                "ru": {"no_bridges": "Нет доступных мостов"},
+            }
+            return translation[lang]["no_bridges"]
+
         maybe_user = get_one("users", "username", username)
         if maybe_user is None:
             new_bridge = random.choice(bridges)
@@ -141,4 +176,4 @@ def respond(
         return f"Successfully improved trust of {recommendee_username}"
 
     else:
-        return help_text
+        return translation[lang]["help_text"]
