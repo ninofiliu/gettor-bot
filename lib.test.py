@@ -1,11 +1,11 @@
 import sqlite3
 import unittest
 from datetime import datetime, timedelta
-from select import select
-from typing import List, Tuple, TypedDict
+from typing import List, Tuple
 
-from lib import help_text_en, respond
+from lib import respond
 from params import max_recs_per_day
+from translations import translations
 
 nb_bridges_per_pool = 3
 
@@ -74,7 +74,7 @@ class TestRespond(unittest.TestCase):
 
         response = respond(con, "help", "bobby")
 
-        self.assertEqual(response, help_text_en)
+        self.assertEqual(response, translations["en"]["help_text"])
 
     ## get_bridge
 
@@ -111,7 +111,7 @@ class TestRespond(unittest.TestCase):
     def test_recommend_0(self):
         fill_db()
         response = respond(con, "recommend", "bobby")
-        self.assertEqual(response, help_text_en)
+        self.assertEqual(response, translations["en"]["help_text"])
 
     # Unknown recommender
     def test_recommend_1(self):
@@ -199,7 +199,7 @@ class TestRespond(unittest.TestCase):
             "not_a_known_command",
             "bobby",
         )
-        self.assertEqual(response, help_text_en)
+        self.assertEqual(response, translations["en"]["help_text"])
 
 
 if __name__ == "__main__":

@@ -4,8 +4,7 @@ Remove any existing database and sets up the tables for new one
 
 import os
 from sqlite3 import connect
-
-nb_bridges_per_pool = 3
+from params import nb_bridges_per_pool
 
 
 try:
