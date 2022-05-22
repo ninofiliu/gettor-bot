@@ -12,11 +12,12 @@ This way, this lib
 (* ^ ω ^)
 """
 
-from nis import match
 import random
 import re
 import sqlite3
+from nis import match
 from typing import List
+
 from params import max_recs_per_day
 
 help_text = """

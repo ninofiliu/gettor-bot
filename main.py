@@ -1,6 +1,6 @@
-from sqlite3 import connect
 import sqlite3
 import sys
+from sqlite3 import connect
 
 import anyio
 from semaphore import Bot, ChatContext

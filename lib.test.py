@@ -1,11 +1,11 @@
-from select import select
 import sqlite3
-from typing import List, Tuple, TypedDict
 import unittest
 from datetime import datetime, timedelta
-from params import max_recs_per_day
+from select import select
+from typing import List, Tuple, TypedDict
 
 from lib import help_text, respond
+from params import max_recs_per_day
 
 nb_bridges_per_pool = 3
 
