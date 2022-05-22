@@ -14,7 +14,7 @@ This way, this lib
 
 import random
 import sqlite3
-from typing import List, Tuple, Union
+from typing import List
 
 help_text = """
 I did not undestand your message.
@@ -26,42 +26,49 @@ Please text me one of:
 """
 
 
-def get_bridges(con: sqlite3.Connection) -> List[str]:
-    cur = con.cursor()
-    cur.execute("SELECT bridge FROM bridges")
-    return [bridge for (bridge,) in cur.fetchall()]
-
-
-def get_bridge(con: sqlite3.Connection, username: str) -> Union[None, str]:
-    cur = con.cursor()
-    cur.execute("SELECT bridge FROM users WHERE username=?", (username,))
-    one = cur.fetchone()
-    return None if one is None else one[0]
-
-
-def set_bridge(con: sqlite3.Connection, username: str, bridge: str) -> None:
-    cur = con.cursor()
-    cur.execute("UPDATE users SET bridge = ? WHERE username = ?", (bridge, username))
-    con.commit()
-
-
 def respond(
     con: sqlite3.Connection,
     text: str,
     username: str,
 ) -> str:
+    def get_all(table: str) -> List[sqlite3.Row]:
+        cur = con.cursor()
+        cur.execute(f"SELECT * FROM {table}")
+        return cur.fetchall()
+
+    def get_one(table: str, key: str, value):
+        cur = con.cursor()
+        cur.execute(f"SELECT * FROM {table} WHERE ? = ?", (key, value))
+        return cur.fetchone()
+
+    def set_one(
+        table: str,
+        filter_key,
+        filter_value,
+        set_key,
+        set_value,
+    ):
+        cur = con.cursor()
+        cur.execute(
+            f"UPDATE {table} SET {set_key} = ? WHERE {filter_key} = ?",
+            (set_value, filter_value),
+        )
+        con.commit()
+
     if text == "help":
         return help_text
+
     if text == "get_bridge":
-        bridges = get_bridges(con)
+        bridges = get_all("bridges")
         if len(bridges) == 0:
             return "No bridges available"
-        maybe_bridge = get_bridge(con, username)
-        if maybe_bridge is None:
+        maybe_user = get_one("users", "username", username)
+        if maybe_user is None:
             new_bridge = random.choice(bridges)
-            set_bridge(con, username, new_bridge)
-            return new_bridge
+            set_one("users", "username", username, "bridge", new_bridge["bridge"])
+            return new_bridge["bridge"]
         else:
-            return maybe_bridge
+            return maybe_user["bridge"]
+
     else:
         return help_text

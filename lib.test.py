@@ -5,7 +5,7 @@ import unittest
 from lib import help_text, respond
 
 con = sqlite3.connect(":memory:")
-
+con.row_factory = sqlite3.Row
 cur = con.cursor()
 cur.execute("CREATE TABLE bridges (bridge text)")
 cur.execute("CREATE TABLE users (username text, bridge text)")

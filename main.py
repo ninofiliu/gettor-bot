@@ -1,4 +1,5 @@
 from sqlite3 import connect
+import sqlite3
 import sys
 
 import anyio
@@ -13,6 +14,7 @@ if __name__ == "__main__":
         exit(1)
 
     con = connect("db.db")
+    con.row_factory = sqlite3.Row
 
     bot = Bot(sys.argv[1])
 
