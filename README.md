@@ -1,5 +1,9 @@
 # gettor-bot
 
+A Signal chatbot to broadcast Tor bridges in countries where Tor relays are blocked/monitored
+
+🥉 Ranked 3rd at the [DemHack 4](https://demhack.ru/) hackathon 🥉
+
 ## Installation
 
 1. Install [signald](https://signald.org/)
