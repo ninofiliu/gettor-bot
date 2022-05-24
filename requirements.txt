@@ -1,4 +1,4 @@
 anyio
 black
 isort
-semaphore
+semaphore-bot
